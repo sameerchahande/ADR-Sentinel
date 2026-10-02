@@ -1,0 +1,31 @@
+# ADR-Sentinel v2 - single-service stack.
+#
+#   docker compose up --build        # build + run, then open http://localhost:8000
+#   docker compose ps                # health should read "healthy"
+#
+# Optional: copy .env.example to .env to override thresholds or the port.
+services:
+  adr-sentinel:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: adr-sentinel:v2
+    container_name: adr-sentinel
+    ports:
+      - "${ADR_SENTINEL_PORT:-8000}:8000"
+    environment:
+      ADR_SENTINEL_HOST: 0.0.0.0
+      ADR_SENTINEL_PORT: 8000
+      LOG_LEVEL: info
+      DEMO_DRUG: tigecycline
+      MPLBACKEND: Agg
+    # Uncomment after `copy .env.example .env` to load local overrides:
+    # env_file:
+    #   - .env
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      start_period: 20s
+      retries: 3
+    restart: unless-stopped

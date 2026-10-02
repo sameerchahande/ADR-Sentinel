@@ -1,0 +1,22 @@
+# Keep the Docker build context small: everything listed here is regenerated
+# inside the image by `RUN python -m sentinel.build_model`.
+.git/
+.gitignore
+.github/
+__pycache__/
+**/__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+.env
+.env.example
+tests/
+models/
+data/
+reports/
+*.joblib
+build_out.txt
+build_err.txt
+This PC - Shortcut.lnk
+*.pdf
